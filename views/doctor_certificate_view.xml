@@ -1,0 +1,49 @@
+<odoo>
+
+    <record id="doctor_certificate_form" model="ir.ui.view">
+        <field name="name">doctor certificate Form</field>
+        <field name="model">hospital.doctor.certificate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="date_awarded"/>
+                        <field name="issuing_authority"/>
+                        <field name="doctor_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="doctor_certificate_tree" model="ir.ui.view">
+        <field name="name">doctor certificate Tree</field>
+        <field name="model">hospital.doctor.certificate</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+                <field name="name"/>
+                <field name="date_awarded"/>
+                <field name="issuing_authority"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="doctor_certificate_action" model="ir.actions.act_window">
+        <field name="name">Doctor Certificate</field>
+        <field name="res_model">hospital.doctor.certificate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Doctor Certificate..
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_doctor_certificate"
+              name="Doctor Certificate"
+              parent="menu_hospital_doctor"
+              action="doctor_certificate_action"
+              sequence="20"/>
+
+</odoo>

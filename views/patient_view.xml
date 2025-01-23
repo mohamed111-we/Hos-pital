@@ -1,0 +1,148 @@
+<odoo>
+
+    <record id="patient_form" model="ir.ui.view">
+        <field name="name">Patient Form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_consulting" string="Consulting" type="object" class="oe_highlight"
+                            invisible="state == 'consulting'"/>
+                    <button name="action_treatment" string="Treatment" type="object" class="oe_highlight"
+                            invisible="state == 'treatment'"/>
+                    <button name="action_discharged" string="Discharged" type="object" class="oe_highlight"
+                            invisible="state == 'discharged'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,consulting,treatment,discharged"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button name="action_view_appointment"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-user"
+                                    invisible="appointment_count == 0">
+                                <field name="appointment_count" widget="statinfo" string="Appointment"/>
+                            </button>
+                        </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1>
+                            <label for="ref"/>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <label for="name"/>
+                            <field name="name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Personal details">
+                            <field name="birth_day"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="address"/>
+                            <field name="prescription_id" widget="many2many_tags"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Health Info">
+                            <field name="blood_type"/>
+                            <field name="current_health_status"/>
+                            <field name="allergies"/>
+                        </group>
+                        <group string="Emergency Contact">
+                            <field name="emergency_contact_name"/>
+                            <field name="emergency_contact_number"/>
+                            <field name="emergency_contact_relation"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Appointments">
+                            <field name="appointment_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="doctor_id"/>
+                                    <field name="appointment_date"/>
+                                    <field name="duration"/>
+                                    <field name="fee"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="patient_tree" model="ir.ui.view">
+        <field name="name">Patient Tree</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree sample="1" decoration-danger="current_health_status == 'critical'">
+                <field name="ref"/>
+                <field name="name"/>
+                <field name="gender" optional="hide"/>
+                <field name="age" optional="show"/>
+                <field name="phone" optional="hide"/>
+                <field name="email" optional="hide"/>
+                <field name="address" optional="hide"/>
+                <field name="blood_type" optional="show"/>
+                <field name="current_health_status" optional="show"/>
+                <field name="active" invisible="1" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="patient_search" model="ir.ui.view">
+        <field name="name">patient search</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="blood_type"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Full Name" name="name" domain="[]" context="{'group_by': 'name'}"/>
+                    <filter string="Blood Type" name="blood_type" domain="[]" context="{'group_by': 'blood_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="patient_action" model="ir.actions.act_window">
+        <field name="name">Patient</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Patient..
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hospital_root"
+              name="Hospital"
+              sequence="10"/>
+
+    <menuitem id="menu_hospital_patient"
+              name="Patient Details"
+              parent="menu_hospital_root"
+              sequence="10"/>
+
+    <menuitem id="menu_patient"
+              name="Patient"
+              parent="menu_hospital_patient"
+              action="patient_action"
+              sequence="10"/>
+
+
+</odoo>

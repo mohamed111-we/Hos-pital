@@ -1,0 +1,127 @@
+<odoo>
+
+    <record id="doctor_form" model="ir.ui.view">
+        <field name="name">doctor Form</field>
+        <field name="model">hospital.doctor</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_on_leave" string="On Leave" type="object" class="oe_highlight"
+                            invisible="state == 'on_leave'"/>
+                    <button name="action_retired" string="Retired" type="object" class="oe_highlight"
+                            invisible="state == 'retired'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="available,on_leave,retired"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_appointment"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-user"
+                                invisible="appointment_count == 0">
+                            <field name="appointment_count" widget="statinfo" string="Appointment"/>
+                        </button>
+                    </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <label for="ref"/>
+                            <field name="ref"/>
+                        </h1>
+                        <h2>
+                            <label for="name"/>
+                            <field name="name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Personal details">
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="address"/>
+                            <field name="gender"/>
+                        </group>
+                        <group string="Service Fees">
+                            <field name="service_fee"/>
+                            <field name="surgery_fee"/>
+                            <field name="examination_fee"/>
+                            <field name="anesthesia_fee"/>
+                            <field name="payment_method"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Appointments">
+                            <field name="appointment_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="patient_id"/>
+                                    <field name="appointment_date"/>
+                                    <field name="duration"/>
+                                    <field name="fee"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Specialization And Experience">
+                            <group>
+                                <field name="specialization"/>
+                                <field name="years_of_experience"/>
+                            </group>
+                            <group>
+                                <field name="certificate_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="date_awarded"/>
+                                        <field name="issuing_authority"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="doctor_tree" model="ir.ui.view">
+        <field name="name">doctor Tree</field>
+        <field name="model">hospital.doctor</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+                <field name="name"/>
+                <field name="gender" optional="hide"/>
+                <field name="phone" optional="hide"/>
+                <field name="email" optional="hide"/>
+                <field name="address" optional="hide"/>
+                <field name="specialization" optional="show"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="doctor_action" model="ir.actions.act_window">
+        <field name="name">Doctor</field>
+        <field name="res_model">hospital.doctor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Doctor..
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hospital_doctor"
+              name="Doctor Details"
+              parent="menu_hospital_root"
+              sequence="30"/>
+
+    <menuitem id="menu_doctor"
+              name="Doctor"
+              parent="menu_hospital_doctor"
+              action="doctor_action"
+              sequence="10"/>
+
+
+</odoo>

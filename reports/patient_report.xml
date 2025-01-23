@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_patient" model="ir.actions.report">
+        <field name="name">Patient Report</field>
+        <field name="model">hospital.patient</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hospital_management.patient_report_template</field>
+        <field name="report_file">hospital_management.patient_report_template</field>
+        <field name="binding_model_id" ref="model_hospital_patient"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="patient_report_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <h2>
+                        Patient Report
+                    </h2>
+                    <style>
+                        table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                        }
+
+                        table, th, td {
+                        border: 1px solid #ddd;
+                        }
+
+                        th {
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 8px;
+                        text-align: center;
+                        }
+
+                        td {
+                        padding: 8px;
+                        text-align: left;
+                        }
+
+                        p{
+                        font-size: 25px;
+                        color: #1E90FF;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        h2 {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #fff;
+                        background-color: #007bff;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        div{
+                        margin-bottom: 10px;
+                        font-size: 18px;
+                        }
+
+                        strong{
+                        color: #000;
+                        }
+
+                        .quote-section {
+                        margin-top: 30px;
+                        padding: 15px;
+                        border-top: 2px solid #ddd;
+                        text-align: center;
+                        font-style: italic;
+                        color: #555;
+                        font-size: 16px;
+                        }
+                    </style>
+
+                    <p>
+                        Personal details
+                    </p>
+                    <div>
+                        <strong>Reference :</strong>
+                        <t t-esc="o.ref"/>
+                    </div>
+                    <div>
+                        <strong>Name :</strong>
+                        <t t-esc="o.name"/>
+                    </div>
+                    <div>
+                        <strong>Birthday :</strong>
+                        <t t-esc="o.birth_day"/>
+                    </div>
+                    <div>
+                        <strong>Age :</strong>
+                        <t t-esc="o.age"/>
+                    </div>
+                    <div>
+                        <strong>Gender :</strong>
+                        <t t-esc="o.gender"/>
+                    </div>
+                    <div>
+                        <strong>Phone :</strong>
+                        <t t-esc="o.phone"/>
+                    </div>
+                    <div>
+                        <strong>Email :</strong>
+                        <t t-esc="o.email"/>
+                    </div>
+                    <div>
+                        <strong>Prescription :</strong>
+                        <t t-esc="' , '.join([prescription.medication for prescription in o.prescription_id])"/>
+                    </div>
+
+
+                    <p>
+                        Health Info
+                    </p>
+                    <div>
+                        <strong>Blood Type :</strong>
+                        <t t-esc="o.blood_type"/>
+                    </div>
+                    <div>
+                        <strong>Health Status :</strong>
+                        <t t-esc="o.current_health_status"/>
+                    </div>
+                    <div>
+                        <strong>Allergies :</strong>
+                        <t t-esc="o.allergies"/>
+                    </div>
+
+                    <p>
+                        Emergency Contact
+                    </p>
+                    <div>
+                        <strong>Emergency Contact Name:</strong>
+                        <t t-esc="o.emergency_contact_name"/>
+                    </div>
+                    <div>
+                        <strong>Emergency Contact Number:</strong>
+                        <t t-esc="o.emergency_contact_number"/>
+                    </div>
+                    <div>
+                        <strong>Relation :</strong>
+                        <t t-esc="o.emergency_contact_relation"/>
+                    </div>
+
+                    <p>
+                        Appointments
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Appointment Date</th>
+                                <th>Duration (Hours)</th>
+                                <th>Appointment Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.appointment_ids" t-as="appointment">
+                                <tr>
+                                    <th>
+                                        <t t-esc="appointment.doctor_id.name"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="appointment.appointment_date"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="appointment.duration"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="appointment.fee"/>
+                                    </th>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <div class="quote-section">
+                        <strong>Related Quote:</strong>
+                        <p>"Health is not valued till sickness comes." - Thomas Fuller</p>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
