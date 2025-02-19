@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_doctor" model="ir.actions.report">
+        <field name="name">Doctor Report</field>
+        <field name="model">hospital.doctor</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hospital_management.report_doctor_template</field>
+        <field name="report_file">hospital_management.report_doctor_template</field>
+        <field name="binding_model_id" ref="model_hospital_doctor"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_doctor_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <h2>
+                        Doctor Report
+                    </h2>
+                    <style>
+                        table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                        }
+
+                        table, th, td {
+                        border: 1px solid #ddd;
+                        }
+
+                        th {
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 8px;
+                        text-align: center;
+                        }
+
+                        td {
+                        padding: 8px;
+                        text-align: left;
+                        }
+
+                        p{
+                        font-size: 25px;
+                        color: #1E90FF;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        h2 {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #fff;
+                        background-color: #007bff;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        div{
+                        margin-bottom: 10px;
+                        font-size: 18px;
+                        }
+
+                        strong{
+                        color: #000;
+                        }
+
+                        .quote-section {
+                        margin-top: 30px;
+                        padding: 15px;
+                        border-top: 2px solid #ddd;
+                        text-align: center;
+                        font-style: italic;
+                        color: #555;
+                        font-size: 16px;
+                        }
+
+                        .signature {
+                        margin-top: 20px;
+                        text-align: right;
+                        font-weight: bold;
+                        font-size: 16px;
+                        color: #333;
+                        }
+                    </style>
+
+
+                    <p>Personal Details</p>
+
+                    <div>
+                        <strong>Reference :</strong>
+                        <t t-esc="o.ref"/>
+                    </div>
+                    <div>
+                        <strong>Full Name :</strong>
+                        <t t-esc="o.name"/>
+                    </div>
+                    <div>
+                        <strong>Phone :</strong>
+                        <t t-esc="o.phone"/>
+                    </div>
+                    <div>
+                        <strong>Email :</strong>
+                        <t t-esc="o.email"/>
+                    </div>
+                    <div>
+                        <strong>Address :</strong>
+                        <t t-esc="o.address"/>
+                    </div>
+                    <div>
+                        <strong>Gender :</strong>
+                        <t t-esc="o.gender"/>
+                    </div>
+
+
+                    <p>Service Fees</p>
+
+                    <div>
+                        <strong>Consultation Fee :</strong>
+                        <t t-esc="o.service_fee"/>
+                    </div>
+                    <div>
+                        <strong>Surgery Fee :</strong>
+                        <t t-esc="o.surgery_fee"/>
+                    </div>
+                    <div>
+                        <strong>Examination Fee :</strong>
+                        <t t-esc="o.examination_fee"/>
+                    </div>
+                    <div>
+                        <strong>Anesthesia Fee :</strong>
+                        <t t-esc="o.anesthesia_fee"/>
+                    </div>
+
+
+                    <p>Appointment</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Appointment Date</th>
+                                <th>Duration (Hours)</th>
+                                <th>Appointment Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.appointment_ids" t-as="appointment">
+                                <tr>
+                                    <td>
+                                        <t t-esc="appointment.patient_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="appointment.appointment_date"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="appointment.duration"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="appointment.fee"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <p>Certificates</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Certificate Name</th>
+                                <th>Awarded</th>
+                                <th>Issuing Authority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.certificate_ids" t-as="certificate">
+                                <tr>
+                                    <td>
+                                        <t t-esc="certificate.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="certificate.date_awarded"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="certificate.issuing_authority"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="quote-section">
+                        "The good physician treats the disease; the great physician treats the patient who has the
+                        disease."
+                        – William Osler
+                    </div>
+
+                    <div class="signature">
+                        Prepared by: Mohamed Yehya
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

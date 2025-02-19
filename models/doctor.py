@@ -23,16 +23,16 @@ class HospitalDoctor(models.Model):
         [('available', 'Available'),  # متاح
         ('on_leave', 'On Leave'),  # في إجازة
         ('retired', 'Retired'),  # متقاعد
-        ],string='Status', default='available', required=True,tracking=True, )
+        ],string='Status', default='available',tracking=True, )
     specialization = fields.Selection(  # التخصص
         [('general', 'General'),  # عام
          ('surgery', 'Surgery'),  # جراحة
          ('cardiology', 'Cardiology'),  # أمراض القلب
          ('pediatrics', 'Pediatrics')  # طب الأطفال
-         ], string='Specialization', required=True)
-    years_of_experience = fields.Integer(string='Years of Experience', required=True, help='Number of years the doctor has been practicing.')
+         ], string='Specialization',)
+    years_of_experience = fields.Integer(string='Years of Experience',  help='Number of years the doctor has been practicing.')
     # تكلفه الخدمات
-    service_fee = fields.Float(string='Consultation Fee', required=True)  # تكلفة الاستشارة
+    service_fee = fields.Float(string='Consultation Fee',)  # تكلفة الاستشارة
     surgery_fee = fields.Float(string='Surgery Fee')                      # تكلفة الجراحة
     examination_fee = fields.Float(string='Examination Fee')              # تكلفة الفحص
     anesthesia_fee = fields.Float(string='Anesthesia Fee')                # تكلفة التخدير
@@ -83,5 +83,4 @@ class HospitalDoctor(models.Model):
             'res_model': 'hospital.appointment',
             'view_mode': 'tree,form',
             'domain': [('doctor_id', '=', self.id)],
-            'context': {'default_doctor_id': self.id},
         }

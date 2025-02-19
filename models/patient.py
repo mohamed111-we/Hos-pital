@@ -9,6 +9,7 @@ class HospitalPatient(models.Model):
 
     ref = fields.Char('Reference', copy=False, readonly=True, default=lambda x: _('New'))
     name = fields.Char(string='Full Name', required=True)
+    customer = fields.Many2one('res.partner', string='Customer')
     image = fields.Binary("Image")
     gender = fields.Selection([
         ('male', 'Male'),
@@ -21,7 +22,7 @@ class HospitalPatient(models.Model):
         ('treatment', 'Under Treatment'), #تحت العلاج
         ('discharged', 'Discharged'),     #تم اخراجه
     ], string="Health Status", default='new', tracking=True)
-    birth_day = fields.Date(string='Birthday', required=True)
+    birth_day = fields.Date(string='Birthday')
     age = fields.Integer(string='Age', compute='_compute_age', readonly=True, )
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
@@ -61,11 +62,10 @@ class HospitalPatient(models.Model):
         for record in self:
             record.appointment_count = len(record.appointment_ids)
 
-
     @api.constrains('phone')
     def _check_phone(self):
-        for record in self:
-            if not record.phone.isdigit():
+        for rec in self:
+            if not rec.phone.isdigit():
                 raise ValidationError("Phone number must contain only digits.")
 
     @api.model_create_multi
@@ -108,3 +108,21 @@ class HospitalPatient(models.Model):
             'domain': [('patient_id', '=', self.id)],
             'context': {'default_patient_id': self.id},
         }
+
+    def action_create_appointment(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Appointment',
+            'res_model': 'create.appointment.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_patient_id': self.id},
+        }
+
+
+
+
+
+
+

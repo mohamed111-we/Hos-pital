@@ -23,8 +23,11 @@
         'views/prescription_view.xml',
         'views/doctor_certificate_view.xml',
 
-
         'reports/patient_report.xml',
+        'reports/appointment_report.xml',
+        'reports/doctor_report.xml',
+
+        'wizard/create_appointment_wizard_view.xml',
     ],
     'demo': [],
     'application': True,

@@ -6,9 +6,10 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_draft" string="Draft" type="object" class="btn-success"/>
+                    <button name="action_draft" string="Draft" type="object" class="oe_highlight"/>
                     <button name="action_confirmed" string="Confirmed" type="object" class="oe_highlight"/>
                     <button name="action_cancelled" string="Cancelled" type="object" class="oe_highlight"/>
+                    <button name="action_record_set_operation" string="Record Set Operations" type="object" class="btn-success"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>

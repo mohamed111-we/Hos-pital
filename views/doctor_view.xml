@@ -10,6 +10,8 @@
                             invisible="state == 'on_leave'"/>
                     <button name="action_retired" string="Retired" type="object" class="oe_highlight"
                             invisible="state == 'retired'"/>
+
+
                     <field name="state" widget="statusbar" statusbar_visible="available,on_leave,retired"/>
                 </header>
                 <sheet>
@@ -65,7 +67,7 @@
                                 <field name="years_of_experience"/>
                             </group>
                             <group>
-                                <field name="certificate_ids">
+                                <field name="certificate_ids" readonly="1">
                                     <tree>
                                         <field name="name"/>
                                         <field name="date_awarded"/>

@@ -33,7 +33,6 @@ class HospitalAppointment(models.Model):  # نموذج المواعيد
         ],string='Priority', required=True, default='medium',)
     attachment_ids = fields.Many2many('ir.attachment', string='Attachment')
 
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -58,3 +57,11 @@ class HospitalAppointment(models.Model):  # نموذج المواعيد
     def action_cancelled(self):
         for rec in self:
             rec.state = 'cancelled'
+
+    def action_record_set_operation(self):
+        for rec in self:
+            print('odoo orm: Record Set Operations')
+            partners = self.env['res.partner'].search([])       # Record set
+            print("mapped For Partners >> ", partners.mapped('name'))
+            print("mapped For Partners >> ", partners.sorted(lambda o : o.write_date, reverse=True))
+            print("Filtered For Partners >> ", partners.filtered(lambda o : o.user_id))

@@ -4,3 +4,4 @@ access_hospital_appointment,access.hospital.appointment,model_hospital_appointme
 access_hospital_doctor,access.hospital.doctor,model_hospital_doctor,,1,1,1,1
 access_hospital_prescription,access.hospital.prescription,model_hospital_prescription,,1,1,1,1
 access_hospital_doctor_certificate,access.hospital.doctor.certificate,model_hospital_doctor_certificate,,1,1,1,1
+access_create_appointment_wizard,access.create.appointment.wizard,model_create_appointment_wizard,,1,1,1,1
